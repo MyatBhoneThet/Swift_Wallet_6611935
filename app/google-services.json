@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1054595745684",
+    "project_id": "swiftwallet6611935",
+    "storage_bucket": "swiftwallet6611935.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1054595745684:android:deed7931eb5b2290ffb181",
+        "android_client_info": {
+          "package_name": "com.example.swift_wallet_6611935"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMiUptd6RwyMrcdFFLuzju7BPr33auTD0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

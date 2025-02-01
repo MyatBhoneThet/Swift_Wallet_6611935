@@ -21,10 +21,32 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.swift_wallet_6611935.ui.theme.Swift_Wallet_6611935Theme
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.swift_wallet_6611935.ViewModel.AuthState
+import com.example.swift_wallet_6611935.ViewModel.AuthViewModel
+
 
 @Composable
-fun MainContent() {
+fun MainContent(modifier: Modifier = Modifier, navController: NavController, authViewModel: AuthViewModel) {
     var selectedTab by remember { mutableStateOf(0) }
+
+    val authState = authViewModel.authState.observeAsState()
+
+    LaunchedEffect(authState.value) {
+        when(authState.value){
+            is AuthState.Unauthenticated -> navController.navigate("login")
+            else -> Unit
+        }
+    }
 
     Scaffold(
         bottomBar = {
@@ -38,7 +60,7 @@ fun MainContent() {
                 NavigationBarItem(
                     selected = selectedTab == 1,
                     onClick = { selectedTab = 1 },
-                    icon = { Icon(Icons.Default.List, "Transactions") },
+                    icon = { Icon(Icons.Default.List, "News") },
                     label = { Text("History") }
                 )
                 NavigationBarItem(
@@ -94,6 +116,20 @@ fun MainContent() {
                     icon = Icons.Default.AccountBox,
                     label = "Pay"
                 )
+            }
+
+            Column(
+                modifier = modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(text = "Home Page", fontSize = 32.sp)
+
+                TextButton(onClick = {
+                    authViewModel.signout()
+                }) {
+                    Text(text = "Sign out")
+                }
             }
 
             // Recent Transactions
