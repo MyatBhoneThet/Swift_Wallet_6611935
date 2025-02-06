@@ -18,10 +18,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.swift_wallet_6611935.ViewModel.AuthViewModel
 
 @Composable
-fun ProfileScreen(paddingValues: PaddingValues, authViewModel: AuthViewModel) {
+fun ProfileScreen(paddingValues: PaddingValues, navController: NavController, authViewModel: AuthViewModel) {
     Column(
         modifier = Modifier
             .padding(paddingValues)
@@ -56,6 +57,12 @@ fun ProfileScreen(paddingValues: PaddingValues, authViewModel: AuthViewModel) {
                 Text("Account Type: Standard")
                 Text("Member Since: January 2024")
             }
+        }
+
+        TextButton(onClick = {
+            navController.navigate("UserManual")
+        }){
+            Text(text = "Watch User Manual Video To Use Our App")
         }
 
 

@@ -1,5 +1,8 @@
 package com.example.swift_wallet_6611935.View
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -32,7 +35,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
+import com.example.swift_wallet_6611935.Cache.StockCache
 
 // Data Classes
 data class StockResult(
@@ -57,12 +62,23 @@ interface FinancialModelingApiService {
 @Composable
 fun HomeScreen(paddingValues: PaddingValues, authViewModel: AuthViewModel, modifier: Modifier) {
 
+    val context = LocalContext.current
+    val stockCache = remember { StockCache(context) }
+
     // State
     var searchQuery by remember { mutableStateOf("") }
     var stockData by remember { mutableStateOf<List<StockResult>>(emptyList()) }
     var isLoading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
     var lastUpdated by remember { mutableStateOf("") }
+
+    // Check internet connection
+    fun isNetworkAvailable(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork ?: return false
+        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+        return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+    }
 
     // Create Retrofit instance
     val retrofit = remember {
@@ -83,21 +99,35 @@ fun HomeScreen(paddingValues: PaddingValues, authViewModel: AuthViewModel, modif
         scope.launch {
             isLoading = true
             error = null
-            try {
-                val response = apiService.searchStocks(
-                    query = query,
-                    limit = 10,
-                    exchange = "NASDAQ"
-                )
-                stockData = response
-                lastUpdated = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
-                    .format(Date())
-            } catch (e: Exception) {
-                error = e.message ?: "An error occurred"
-                println("Error searching stocks: ${e.message}")
-            } finally {
-                isLoading = false
+
+            if (isNetworkAvailable(context)) {
+                try {
+                    val response = apiService.searchStocks(
+                        query = query,
+                        limit = 10,
+                        exchange = "NASDAQ"
+                    )
+                    stockData = response
+                    // Cache the results
+                    stockCache.saveStocks(query, response)
+                    lastUpdated = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+                        .format(Date())
+                } catch (e: Exception) {
+                    error = e.message ?: "An error occurred"
+                    println("Error searching stocks: ${e.message}")
+                }
+            } else {
+                // Load from cache if no internet
+                val cachedData = stockCache.getStocks(query)
+                if (cachedData != null) {
+                    stockData = cachedData
+                    lastUpdated = "Showing cached data"
+                } else {
+                    error = "No internet connection and no cached data available"
+                }
             }
+
+            isLoading = false
         }
     }
 
