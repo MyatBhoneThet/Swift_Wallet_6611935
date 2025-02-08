@@ -58,20 +58,8 @@ fun MainContent(modifier: Modifier = Modifier, navController: NavController, aut
     ) { paddingValues ->
         when (selectedTab) {
             0 -> HomeScreen(paddingValues = paddingValues, authViewModel = authViewModel,modifier)
-            1 -> HistoryScreen(paddingValues = paddingValues)
+            1 -> HistoryScreen(paddingValues = paddingValues, navController = navController)
             2 -> ProfileScreen(paddingValues = paddingValues,navController, authViewModel = authViewModel)
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
