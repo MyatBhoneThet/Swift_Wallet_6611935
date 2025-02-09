@@ -64,12 +64,5 @@ fun ProfileScreen(paddingValues: PaddingValues, navController: NavController, au
         }){
             Text(text = "Watch User Manual Video To Use Our App")
         }
-
-
-        TextButton(onClick = {
-            authViewModel.signout()
-        }) {
-            Text(text = "Sign out")
-        }
     }
 }

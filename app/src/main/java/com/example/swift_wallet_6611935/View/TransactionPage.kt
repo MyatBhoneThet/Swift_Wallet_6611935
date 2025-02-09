@@ -75,12 +75,13 @@ fun TransactionPage(navController: NavController, authViewModel: AuthViewModel) 
             // Back Button
             Button(
                 onClick = {
-                    navController.navigate("history") // Navigates to History Page
+                    navController.navigate("home") // Navigates back to Home (with Bottom Navigation Bar)
                 },
                 modifier = Modifier.weight(1f)
             ) {
                 Text(text = "Back")
             }
+
 
             // Transfer Button
             Button(
