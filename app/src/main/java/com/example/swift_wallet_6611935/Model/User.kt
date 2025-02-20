@@ -9,4 +9,3 @@ data class User(
     val address: String,
     val profileImage: String?,
 )
-

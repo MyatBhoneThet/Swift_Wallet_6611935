@@ -17,7 +17,13 @@ import com.example.swift_wallet_6611935.ViewModel.AuthViewModel
 
 
 @Composable
-fun MainContent(modifier: Modifier = Modifier, navController: NavController, authViewModel: AuthViewModel) {
+fun MainContent(
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    authViewModel: AuthViewModel,
+    isDarkTheme: Boolean,
+    onThemeToggle: () -> Unit
+) {
     var selectedTab by remember { mutableStateOf(0) }
 
 
@@ -57,9 +63,12 @@ fun MainContent(modifier: Modifier = Modifier, navController: NavController, aut
         }
     ) { paddingValues ->
         when (selectedTab) {
-            0 -> HomeScreen(paddingValues = paddingValues, authViewModel = authViewModel,modifier)
-            1 -> HistoryScreen(paddingValues = paddingValues, navController = navController)
-            2 -> ProfileScreen(paddingValues = paddingValues, navController =navController, authViewModel = authViewModel)
+            0 -> HomeScreen(paddingValues = paddingValues, authViewModel = authViewModel,modifier, isDarkTheme = isDarkTheme,
+                onThemeToggle = onThemeToggle)
+            1 -> HistoryScreen(paddingValues = paddingValues, navController = navController, isDarkTheme = isDarkTheme,
+                onThemeToggle = onThemeToggle)
+            2 -> ProfileScreen(paddingValues = paddingValues, navController = navController, authViewModel = authViewModel, isDarkTheme = isDarkTheme,
+                onThemeToggle = onThemeToggle)
         }
     }
 }

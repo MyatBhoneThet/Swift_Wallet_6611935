@@ -33,6 +33,9 @@ import java.util.Date
 import java.util.Locale
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Brightness4
+import androidx.compose.material.icons.filled.Brightness7
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
@@ -60,7 +63,8 @@ interface FinancialModelingApiService {
 }
 
 @Composable
-fun HomeScreen(paddingValues: PaddingValues, authViewModel: AuthViewModel, modifier: Modifier) {
+fun HomeScreen(paddingValues: PaddingValues, authViewModel: AuthViewModel, modifier: Modifier,  isDarkTheme: Boolean,
+               onThemeToggle: () -> Unit) {
 
     val context = LocalContext.current
     val stockCache = remember { StockCache(context) }
@@ -136,6 +140,22 @@ fun HomeScreen(paddingValues: PaddingValues, authViewModel: AuthViewModel, modif
         searchStocks("AA")  // Default search
     }
 
+    // Theme Toggle Button (Top-left corner)
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        horizontalArrangement = Arrangement.Start
+    ) {
+        IconButton(onClick = onThemeToggle) {
+            Icon(
+                imageVector = if (isDarkTheme) Icons.Filled.Brightness7 else Icons.Filled.Brightness4,
+                contentDescription = "Toggle Theme"
+            )
+        }
+
+    }
+
     Column(
         modifier = modifier
             .padding(paddingValues)
@@ -147,6 +167,7 @@ fun HomeScreen(paddingValues: PaddingValues, authViewModel: AuthViewModel, modif
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
+            Spacer(modifier = Modifier.height(36.dp))
             Text(
                 text = "Stock News Search",
                 style = MaterialTheme.typography.titleLarge,

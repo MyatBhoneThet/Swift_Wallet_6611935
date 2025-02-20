@@ -57,9 +57,15 @@ private val DarkColorScheme = darkColorScheme(
     onSurfaceVariant = md_theme_dark_onSurfaceVariant,
 )
 
+//@Composable
+//fun Swift_Wallet_6611935Theme(
+//    darkTheme: Boolean = isSystemInDarkTheme(),
+//    dynamicColor: Boolean = true,
+//    content: @Composable () -> Unit
+//) {
 @Composable
 fun Swift_Wallet_6611935Theme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    darkTheme: Boolean = isSystemInDarkTheme(), // Keep this as default
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
