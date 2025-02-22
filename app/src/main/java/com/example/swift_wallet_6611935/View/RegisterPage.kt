@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.swift_wallet_6611935.ui.theme.Swift_Wallet_6611935Theme
 import androidx.navigation.NavController
+import com.example.swift_wallet_6611935.Localization.StringResources
 import com.example.swift_wallet_6611935.ViewModel.AuthState
 import com.example.swift_wallet_6611935.ViewModel.AuthViewModel
 
@@ -39,6 +40,10 @@ import com.example.swift_wallet_6611935.ViewModel.AuthViewModel
 fun RegisterContent( modifier: Modifier = Modifier,
                      navController: NavController,
                      authViewModel: AuthViewModel) {
+
+    var isThaiLanguage by remember { mutableStateOf(false) }
+    val strings = if (isThaiLanguage) StringResources.RegisterScreen.th else StringResources.RegisterScreen.en
+
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -64,7 +69,20 @@ fun RegisterContent( modifier: Modifier = Modifier,
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Signup Page", fontSize = 32.sp)
+
+        // Language Toggle Button
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(130.dp),
+            horizontalArrangement = Arrangement.Start
+        ) {
+            TextButton(
+                onClick = { isThaiLanguage = !isThaiLanguage }
+            ) {
+                Text(strings["toggleLanguage"]!!)
+            }
+        }
+
+        Text(text = strings["signupPage"]!!, fontSize = 32.sp)
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -74,7 +92,7 @@ fun RegisterContent( modifier: Modifier = Modifier,
                 email = it
             },
             label = {
-                Text(text = "Email")
+                Text(text =strings["email"]!!)
             }
         )
 
@@ -86,7 +104,7 @@ fun RegisterContent( modifier: Modifier = Modifier,
                 password = it
             },
             label = {
-                Text(text = "Password")
+                Text(text = strings["password"]!!)
             }
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -96,7 +114,7 @@ fun RegisterContent( modifier: Modifier = Modifier,
                 authViewModel.signup(email, password)
             }, enabled = authState.value != AuthState.Loading
         ) {
-            Text(text = "Create account")
+            Text(text =strings["createAccount"]!!)
         }
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -104,7 +122,7 @@ fun RegisterContent( modifier: Modifier = Modifier,
         TextButton(onClick = {
             navController.navigate("login")
         }) {
-            Text(text = "Already have an account, Login")
+            Text(text = strings["haveAccount"]!!)
         }
 
     }

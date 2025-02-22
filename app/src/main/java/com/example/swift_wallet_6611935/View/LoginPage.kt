@@ -3,8 +3,10 @@ package com.example.swift_wallet_6611935.View
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -26,6 +28,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.swift_wallet_6611935.Localization.StringResources
 import com.example.swift_wallet_6611935.ViewModel.AuthState
 import com.example.swift_wallet_6611935.ViewModel.AuthViewModel
 import com.example.swift_wallet_6611935.ui.theme.Swift_Wallet_6611935Theme
@@ -33,6 +36,9 @@ import com.example.swift_wallet_6611935.ui.theme.Swift_Wallet_6611935Theme
 
 @Composable
 fun LoginContent(modifier: Modifier = Modifier, navController: NavController, authViewModel: AuthViewModel) {
+
+    var isThaiLanguage by remember { mutableStateOf(false) }
+    val strings = if (isThaiLanguage) StringResources.LoginScreen.th else StringResources.LoginScreen.en
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -54,7 +60,19 @@ fun LoginContent(modifier: Modifier = Modifier, navController: NavController, au
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Login Page", fontSize = 32.sp)
+        // Language Toggle Button
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(140.dp),
+            horizontalArrangement = Arrangement.Start
+        ) {
+            TextButton(
+                onClick = { isThaiLanguage = !isThaiLanguage }
+            ) {
+                Text(strings["toggleLanguage"]!!)
+            }
+        }
+
+        Text(text = strings["loginPage"]!!, fontSize = 32.sp)
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -64,7 +82,7 @@ fun LoginContent(modifier: Modifier = Modifier, navController: NavController, au
                 email = it
             },
             label = {
-                Text(text = "Email")
+                Text(text = strings["email"]!!)
             }
         )
 
@@ -76,7 +94,7 @@ fun LoginContent(modifier: Modifier = Modifier, navController: NavController, au
                 password = it
             },
             label = {
-                Text(text = "Password")
+                Text(text = strings["password"]!!)
             }
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -86,7 +104,7 @@ fun LoginContent(modifier: Modifier = Modifier, navController: NavController, au
         },
             enabled = authState.value != AuthState.Loading
         ) {
-            Text(text = "Login")
+            Text(text = strings["loginButton"]!!)
         }
 
 
@@ -95,7 +113,7 @@ fun LoginContent(modifier: Modifier = Modifier, navController: NavController, au
         TextButton(onClick = {
             navController.navigate("signup")
         }) {
-            Text(text = "Don't have an account, Signup")
+            Text(text = strings["noAccount"]!!)
         }
 
     }

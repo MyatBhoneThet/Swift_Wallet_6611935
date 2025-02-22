@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.swift_wallet_6611935.Localization.StringResources
 import com.example.swift_wallet_6611935.ViewModel.AuthViewModel
 
 @Composable
@@ -37,6 +38,10 @@ fun ProfileScreen(
     isDarkTheme: Boolean,
     onThemeToggle: () -> Unit
 ) {
+
+    var isThaiLanguage by remember { mutableStateOf(false) }
+    val strings = if (isThaiLanguage) StringResources.ProfileScreen.th else StringResources.ProfileScreen.en
+
     Column(
         modifier = Modifier
             .padding(paddingValues)
@@ -57,6 +62,13 @@ fun ProfileScreen(
                     contentDescription = "Toggle Theme"
                 )
             }
+            Spacer(modifier = Modifier.width(220.dp))
+            // Language Toggle
+            TextButton(
+                onClick = { isThaiLanguage = !isThaiLanguage }
+            ) {
+                Text(strings["toggleLanguage"]!!)
+            }
         }
 
         Icon(
@@ -68,7 +80,7 @@ fun ProfileScreen(
         )
 
         Text(
-            text = "User Profile",
+            text = strings["userProfile"]!!,
             style = MaterialTheme.typography.headlineMedium
         )
 
@@ -80,16 +92,22 @@ fun ProfileScreen(
             Column(
                 modifier = Modifier.padding(16.dp)
             ) {
-                Text("Email: user@example.com")
-                Text("Account Type: Standard")
-                Text("Member Since: January 2024")
+                Text(strings["email"]!! + "user@example.com")
+                Text(strings["accountType"]!! + "Standard")
+                Text(strings["memberSince"]!! + "January 2024")
             }
         }
 
         TextButton(onClick = {
             navController.navigate("UserManual")
         }) {
-            Text(text = "Watch User Manual Video To Use Our App")
+            Text(text =strings["watchUserManual"]!!)
+        }
+
+        TextButton(onClick = {
+            authViewModel.signout()
+        }) {
+            Text(text = "Sign out")
         }
     }
 }

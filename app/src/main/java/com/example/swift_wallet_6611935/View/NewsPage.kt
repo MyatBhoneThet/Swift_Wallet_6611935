@@ -41,6 +41,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import com.example.swift_wallet_6611935.Cache.StockCache
+import com.example.swift_wallet_6611935.Localization.StringResources
+
 
 // Data Classes
 data class StockResult(
@@ -65,6 +67,7 @@ interface FinancialModelingApiService {
 @Composable
 fun HomeScreen(paddingValues: PaddingValues, authViewModel: AuthViewModel, modifier: Modifier,  isDarkTheme: Boolean,
                onThemeToggle: () -> Unit) {
+
 
     val context = LocalContext.current
     val stockCache = remember { StockCache(context) }
@@ -135,6 +138,12 @@ fun HomeScreen(paddingValues: PaddingValues, authViewModel: AuthViewModel, modif
         }
     }
 
+    var isThaiLanguage by remember { mutableStateOf(false) }
+    val strings = if (isThaiLanguage) StringResources.HomeScreen.th else StringResources.HomeScreen.en
+
+
+
+
     // Initial search
     LaunchedEffect(Unit) {
         searchStocks("AA")  // Default search
@@ -153,6 +162,14 @@ fun HomeScreen(paddingValues: PaddingValues, authViewModel: AuthViewModel, modif
                 contentDescription = "Toggle Theme"
             )
         }
+        Spacer(modifier = Modifier.width(220.dp))
+        // Language Toggle
+        TextButton(
+            onClick = { isThaiLanguage = !isThaiLanguage }
+        ) {
+            Text(strings["toggleLanguage"]!!)
+        }
+
 
     }
 
@@ -169,7 +186,7 @@ fun HomeScreen(paddingValues: PaddingValues, authViewModel: AuthViewModel, modif
         ) {
             Spacer(modifier = Modifier.height(36.dp))
             Text(
-                text = "Stock News Search",
+                text = strings["stockNewsSearch"]!!,
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
@@ -181,7 +198,7 @@ fun HomeScreen(paddingValues: PaddingValues, authViewModel: AuthViewModel, modif
                         searchStocks(it)
                     }
                 },
-                label = { Text("Search Ticker") },
+                label = { Text(strings["searchTicker"]!!) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
@@ -195,11 +212,11 @@ fun HomeScreen(paddingValues: PaddingValues, authViewModel: AuthViewModel, modif
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "Last updated: $lastUpdated",
+                text = strings["lastUpdated"]!! + lastUpdated,
                 style = MaterialTheme.typography.bodySmall
             )
             Text(
-                text = "Showing max 10 results",
+                text = strings["showingMaxResults"]!!,
                 style = MaterialTheme.typography.bodySmall
             )
         }
@@ -223,13 +240,13 @@ fun HomeScreen(paddingValues: PaddingValues, authViewModel: AuthViewModel, modif
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Text(
-                            text = error ?: "Unknown error occurred",
+                            text = error ?: strings["unknownError"]!!,
                             color = MaterialTheme.colorScheme.error,
                             textAlign = TextAlign.Center,
                             modifier = Modifier.padding(16.dp)
                         )
                         Button(onClick = { searchStocks(searchQuery) }) {
-                            Text("Retry")
+                            Text( strings["retry"]!!)
                         }
                     }
                 }
@@ -240,7 +257,7 @@ fun HomeScreen(paddingValues: PaddingValues, authViewModel: AuthViewModel, modif
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "No results found",
+                        text = strings["noResultsFound"]!!,
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.secondary
                     )

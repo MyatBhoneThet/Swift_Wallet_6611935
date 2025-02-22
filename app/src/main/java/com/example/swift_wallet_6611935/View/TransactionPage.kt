@@ -24,6 +24,21 @@ fun TransactionPage(navController: NavController, authViewModel: AuthViewModel, 
     var amount by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
 
+    // Theme Toggle Button (Top-left corner)
+    Row(
+        modifier = Modifier
+            .fillMaxHeight()
+            .padding(16.dp),
+        horizontalArrangement = Arrangement.Start
+    ) {
+        IconButton(onClick = onThemeToggle) {
+            Icon(
+                imageVector = if (isDarkTheme) Icons.Filled.Brightness7 else Icons.Filled.Brightness4,
+                contentDescription = "Toggle Theme"
+            )
+        }
+    }
+
     // Logic to validate input
     fun isFormValid(): Boolean {
         return accountNumber.text.isNotBlank() && amount.isNotBlank() && amount.toDoubleOrNull() != null
@@ -46,20 +61,6 @@ fun TransactionPage(navController: NavController, authViewModel: AuthViewModel, 
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        // Theme Toggle Button (Top-left corner)
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.Start
-        ) {
-            IconButton(onClick = onThemeToggle) {
-                Icon(
-                    imageVector = if (isDarkTheme) Icons.Filled.Brightness7 else Icons.Filled.Brightness4,
-                    contentDescription = "Toggle Theme"
-                )
-            }
-        }
         // Title
         Text(text = "Make a Transaction", style = MaterialTheme.typography.headlineSmall)
 
